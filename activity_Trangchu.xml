@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.will.nhatro.Trangchu">
+
+
+    <EditText android:id="@+id/inputSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập địa điểm cần tìm"
+        android:inputType="textVisiblePassword"/>
+
+    <Button android:id="@+id/dangtinbtn_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn có phòng cho thuê ?"
+        android:layout_below="@+id/inputSearch" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dangtinbtn_button" />
+
+
+
+
+</RelativeLayout>
