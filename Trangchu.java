@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,6 +26,8 @@ public class Trangchu extends ListActivity {
     protected List<ParseObject> mStatus; // mang objectparse
     protected Button mdangtin; // dang tim
     protected EditText timkiem; // tim kiem
+    ArrayAdapter<ParseObject> aaa;
+
 
 
 
@@ -66,6 +69,24 @@ public class Trangchu extends ListActivity {
 
                     final statusAdapter adapter = new statusAdapter(getListView().getContext(), mStatus);
                     setListAdapter(adapter);
+                    timkiem.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            adapter.getFilter().filter(s);
+
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
 
                     ///////////////////////////////
 
@@ -77,26 +98,8 @@ public class Trangchu extends ListActivity {
             }
         });
         //---------------------//
-        final statusAdapter adapter = new statusAdapter(getListView().getContext(), mStatus);
-        setListAdapter(adapter);
-        timkiem.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
 
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
 
