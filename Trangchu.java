@@ -3,6 +3,8 @@ package com.example.will.nhatro;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,7 @@ public class Trangchu extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trangchu);
 
+
         timkiem = (EditText) findViewById(R.id.inputSearch);
         mdangtin = (Button) findViewById(R.id.dangtinbtn_button);
         mdangtin.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +54,7 @@ public class Trangchu extends ListActivity {
 
             }
         });
+
         /////------------------//
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Dulieu");
         query.orderByDescending("createdAt");
@@ -73,6 +77,26 @@ public class Trangchu extends ListActivity {
             }
         });
         //---------------------//
+        final statusAdapter adapter = new statusAdapter(getListView().getContext(), mStatus);
+        setListAdapter(adapter);
+        timkiem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
 
