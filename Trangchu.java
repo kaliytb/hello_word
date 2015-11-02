@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,9 +25,6 @@ public class Trangchu extends ListActivity {
     protected List<ParseObject> mStatus; // mang objectparse
     protected Button mdangtin; // dang tim
     protected EditText timkiem; // tim kiem
-    ArrayAdapter<ParseObject> aaa;
-
-
 
 
     @Override
@@ -40,6 +36,7 @@ public class Trangchu extends ListActivity {
         timkiem = (EditText) findViewById(R.id.inputSearch);
         mdangtin = (Button) findViewById(R.id.dangtinbtn_button);
         mdangtin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -69,24 +66,6 @@ public class Trangchu extends ListActivity {
 
                     final statusAdapter adapter = new statusAdapter(getListView().getContext(), mStatus);
                     setListAdapter(adapter);
-                    timkiem.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            adapter.getFilter().filter(s);
-
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
 
                     ///////////////////////////////
 
@@ -118,14 +97,11 @@ public class Trangchu extends ListActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id)
-        {
-            case R.id.UpdateStatus:
-            {
+        switch (id) {
+            case R.id.UpdateStatus: {
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null)
-
 
 
                 {
@@ -133,19 +109,16 @@ public class Trangchu extends ListActivity {
                     Intent nextcapnhap = new Intent(Trangchu.this, CapnhapActivity.class);
                     startActivity(nextcapnhap);
 
-                }
-                else
-                {
-                        // show the signup or login screen
-                    Toast.makeText(Trangchu.this,"Bạn phải đăng nhập trước khi đăng tin", Toast.LENGTH_LONG).show();
-                        Intent nextlogin2 = new Intent(Trangchu.this, DangnhapActivity.class);
-                        startActivity(nextlogin2);
+                } else {
+                    // show the signup or login screen
+                    Toast.makeText(Trangchu.this, "Bạn phải đăng nhập trước khi đăng tin", Toast.LENGTH_LONG).show();
+                    Intent nextlogin2 = new Intent(Trangchu.this, DangnhapActivity.class);
+                    startActivity(nextlogin2);
                 }
 
                 break;
             }
-            case R.id.LogoutUser:
-            {
+            case R.id.LogoutUser: {
                 ParseUser.logOut();
                 Intent nextupdate = new Intent(this, DangnhapActivity.class);
                 startActivity(nextupdate);
@@ -156,18 +129,57 @@ public class Trangchu extends ListActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id)
-    {
-        super.onListItemClick(l,v,position,id);
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
         ParseObject statusOb = mStatus.get(position);
         String objectId = statusOb.getObjectId();
 
-       // Toast.makeText(getApplicationContext(), objectId, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), objectId, Toast.LENGTH_LONG).show();
         Intent mhchitiet = new Intent(this, ChitietActivity.class);
         mhchitiet.putExtra("objectID", objectId);
         startActivity(mhchitiet);
 
     }
 
+    ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Dulieu");
+
+    public void setQuery(ParseQuery<ParseObject> query) {
+        this.query = query;
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(final List<ParseObject> status, ParseException e) {
+                if (e == null) {
+                    mStatus = status;
+
+                    final statusAdapter adapter = new statusAdapter(getListView().getContext(), mStatus);
+                    setListAdapter(adapter);
+                    timkiem.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            adapter.getFilter().filter(s);
+
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                        }
+                    });
+                    ///////////////////////////////
+
+
+                } else {
+                }
+
+
+            }
+        });
+    }
 }
